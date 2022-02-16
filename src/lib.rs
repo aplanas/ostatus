@@ -422,14 +422,14 @@ impl Installation {
 
     fn from_role(role: &str, roles: &Roles) -> GenericResult<Installation> {
         let repo_alias = repo_alias()?;
+        // TODO The product information should be part of Roles
         let products = vec![baseproduct()?];
         let ref_installation = roles.0.get(role).expect("Role not found");
-        let extra_packages = Vec::new();
         let test_case = testcase(
             &repo_alias,
             &products,
             &ref_installation.patterns,
-            &extra_packages,
+            &ref_installation.packages,
         )?;
 
         let mut pool = libsolv_rs::pool::Pool::new();
@@ -496,6 +496,26 @@ fn find_closer_role(roles: &Roles, installation: &Installation) -> GenericResult
     }
 
     Ok(best_role)
+}
+
+fn apply_optional_for_role(role: &str, roles: &mut Roles, installation: &Installation) {
+    let ref_installation = roles.0.get_mut(role).unwrap();
+
+    let installed_packages_set: HashSet<_> =
+        installation.packages.iter().map(|p| &p.name).collect();
+    for package_opt in &ref_installation.packages_opt {
+        if installed_packages_set.contains(package_opt) {
+            ref_installation.packages.push(package_opt.clone());
+        }
+    }
+
+    let installed_patterns_set: HashSet<_> =
+        installation.patterns.iter().map(|p| &p.name).collect();
+    for pattern_opt in &ref_installation.patterns_opt {
+        if installed_patterns_set.contains(&pattern_opt) {
+            ref_installation.patterns.push(pattern_opt.clone());
+        }
+    }
 }
 
 #[derive(Debug)]
@@ -708,7 +728,7 @@ fn diff_and_join(
     difference.join(" ")
 }
 
-pub fn create_status_file(roles: Roles, status_dir: &str) -> GenericResult<()> {
+pub fn create_status_file(mut roles: Roles, status_dir: &str) -> GenericResult<()> {
     if !path::Path::new(status_dir).exists() {
         fs::create_dir(status_dir)?;
     }
@@ -720,8 +740,13 @@ pub fn create_status_file(roles: Roles, status_dir: &str) -> GenericResult<()> {
     let release = OsRelease::new()?;
     status.push(format!(r#"VERSION_ID="{}""#, release.version_id));
 
+    roles.apply_default();
     let inst_system = Installation::from_system()?;
     let role = find_closer_role(&roles, &inst_system)?.expect("Role cannot be detected");
+    // Once that we know the role, we can resolve the optional
+    // packages and patterns efficiently
+    apply_optional_for_role(&role, &mut roles, &inst_system);
+
     status.push(format!(r#"ROLE="{}""#, role));
 
     // System manifest contains the list of packages expected for the
@@ -768,15 +793,13 @@ pub fn create_status_file(roles: Roles, status_dir: &str) -> GenericResult<()> {
         diff_and_join(
             &packages_user.packages,
             &inst_role.packages,
-	    // TODO part of this is already in the config file
-            Some(&["patterns-", "kernel-", "snapper", "grub2", "btrfsprogs"])
+            Some(&["patterns-"])
         )
     ));
     status.push(format!(
         r#"REMOVED_PACKAGES="{}""#,
         diff_and_join(&inst_role.packages, &inst_system.packages, None)
     ));
-
 
     let mut ostatus = fs::File::create(&format!("{}/ostatus", status_dir))?;
     ostatus.write_all(status.join("\n").as_bytes())?;

@@ -277,7 +277,8 @@ impl Pool {
         let mut packages = Vec::new();
         let mut testcase_filename = env::temp_dir();
         testcase_filename.push("testcase.solv");
-        fs::write(&testcase_filename, testcase).expect("Error writing test case");
+        // Make sure that we end with a new line
+        fs::write(&testcase_filename, &format!("{testcase}\n")).expect("Error writing test case");
 
         let mut job = Queue::new();
         let mut result = ptr::null_mut();

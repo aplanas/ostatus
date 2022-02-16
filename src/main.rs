@@ -32,9 +32,7 @@ fn run() -> ostatus::GenericResult<()> {
         cfgs.push(config);
     }
 
-    let mut roles = ostatus::Roles::from_config(&cfgs)?;
-    // TODO make it implicit in from_config
-    roles.apply_default();
+    let roles = ostatus::Roles::from_config(&cfgs)?;
 
     let status_dir = args.directory.unwrap_or_else(|| ostatus::STATUS_DIR.to_string());
     if args.update {
