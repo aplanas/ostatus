@@ -1,0 +1,14 @@
+version: 2
+updates:
+  - package-ecosystem: cargo
+    directory: "/"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: cargo
+    directory: "/libsolv-sys"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: cargo
+    directory: "/libsolv-rs"
+    schedule:
+      interval: "daily"
