@@ -7,13 +7,13 @@ edition = "2021"
 
 [dependencies]
 chrono = "0.4.19"
-clap = { version = "3.0.14", features = ["derive"] }
+clap = { version = "3.1.0", features = ["derive"] }
 configparser = "3.0.0"
 flate2 = "1.0.22"
 librpm = { git = "https://github.com/rpm-software-management/librpm.rs" }
 libsolv-rs = { path = "libsolv-rs" }
 regex = "1.5.4"
-sha2 = "0.10.1"
+sha2 = "0.10.2"
 xmltree = "0.10.3"
 
 [workspace]
