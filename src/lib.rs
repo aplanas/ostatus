@@ -24,35 +24,13 @@ static CONFIG: &str = "ostatus.cfg";
 pub type GenericError = Box<dyn std::error::Error + Send + Sync + 'static>;
 pub type GenericResult<T> = Result<T, GenericError>;
 
-struct ElementSearch<'a>(&'a xmltree::Element);
-
-impl ElementSearch<'_> {
-    fn get_child<P: xmltree::ElementPredicate>(&self, k: P) -> Option<ElementSearch> {
-        self.0.get_child(k).map(ElementSearch)
-    }
-
-    fn get_children<P: xmltree::ElementPredicate>(
-        &self,
-        k: P,
-    ) -> impl Iterator<Item = &xmltree::Element> {
-        self.0
-            .children
-            .iter()
-            .filter_map(|e| match e {
-                xmltree::XMLNode::Element(elem) => Some(elem),
-                _ => None,
-            })
-            .filter(move |e| k.match_element(e))
-    }
-}
-
 /// An installation of reference
 #[derive(Default, Debug)]
-struct ReferenceInstallation {
-    patterns: Vec<String>,
-    packages: Vec<String>,
-    patterns_opt: Vec<String>,
-    packages_opt: Vec<String>,
+pub struct ReferenceInstallation {
+    pub patterns: Vec<String>,
+    pub packages: Vec<String>,
+    pub patterns_opt: Vec<String>,
+    pub packages_opt: Vec<String>,
 }
 
 impl ReferenceInstallation {
@@ -87,7 +65,7 @@ impl ReferenceInstallation {
 }
 
 #[derive(Default, Debug)]
-pub struct Roles(HashMap<String, ReferenceInstallation>);
+pub struct Roles(pub HashMap<String, ReferenceInstallation>);
 
 impl Roles {
     pub fn from_config(paths: &[impl AsRef<path::Path>]) -> GenericResult<Roles> {
@@ -118,67 +96,6 @@ impl Roles {
         Ok(roles)
     }
 
-    pub fn from_control(path: impl AsRef<path::Path>) -> GenericResult<Roles> {
-        let control = fs::File::open(path)?;
-        let root = xmltree::Element::parse(control)?;
-
-        let default = ReferenceInstallation {
-            patterns: Roles::default_patterns(&root).unwrap_or_default(),
-            // For now we set some well known defaults
-            packages_opt: vec![
-                "kernel-default".to_string(),
-                "kernel-pae".to_string(),
-                "kernel-vanilla".to_string(),
-                "snapper".to_string(),
-                "grub2".to_string(),
-                "btrfsprogs".to_string(),
-            ],
-            ..ReferenceInstallation::default()
-        };
-
-        let mut roles = Roles::roles_patterns(&root)?;
-        roles.0.insert("default".to_string(), default);
-
-        Ok(roles)
-    }
-
-    fn default_patterns(element: &xmltree::Element) -> Option<Vec<String>> {
-        Some(
-            element
-                .get_child("software")?
-                .get_child("default_patterns")?
-                .get_text()?
-                .split(' ')
-                .map(|s| s.to_owned())
-                .collect::<Vec<String>>(),
-        )
-    }
-
-    fn roles_patterns(element: &xmltree::Element) -> GenericResult<Roles> {
-        let mut roles = Roles(HashMap::new());
-
-        let product_defines_search = ElementSearch(element);
-        for system_role in product_defines_search
-            .get_child("system_roles")
-            .unwrap()
-            .get_children("system_role")
-        {
-            let role = system_role
-                .get_child("id")
-                .unwrap()
-                .get_text()
-                .unwrap()
-                .into_owned();
-            let installation = ReferenceInstallation {
-                patterns: Roles::default_patterns(system_role).unwrap_or_default(),
-                ..ReferenceInstallation::default()
-            };
-            roles.0.insert(role, installation);
-        }
-
-        Ok(roles)
-    }
-
     pub fn apply_default(&mut self) {
         if let Some(default) = self.0.remove("default") {
             for installation in self.0.values_mut() {
@@ -199,7 +116,7 @@ impl Roles {
     }
 }
 
-pub fn find_configs() -> GenericResult<Vec<String>> {
+pub fn find_configs() -> GenericResult<Vec<path::PathBuf>> {
     let release = OsRelease::new()?;
 
     let mut filenames = Vec::new();
@@ -210,8 +127,8 @@ pub fn find_configs() -> GenericResult<Vec<String>> {
     let mut configs = Vec::new();
     for dir in [CONFIG_DIR_SYS, CONFIG_DIR] {
         for filename in &filenames {
-            let config = format!("{}/{}", dir, filename);
-            if path::Path::new(&config).exists() {
+            let config: path::PathBuf = [dir, filename].iter().collect();
+            if config.exists() {
                 configs.push(config);
             }
         }

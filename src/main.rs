@@ -12,12 +12,8 @@ struct Args {
     update: bool,
 
     /// Config file name
-    #[clap(short, long)]
-    config: Option<String>,
-
-    /// Control XML file name
-    #[clap(short = 'x', long)]
-    control: Option<String>,
+    #[clap(short, long, parse(from_os_str))]
+    config: Option<path::PathBuf>,
 
     /// Directory where to store the information
     #[clap(short, long)]
