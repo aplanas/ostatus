@@ -17,8 +17,8 @@ static CONFIGURE: Once = Once::new();
 
 pub static STATUS_DIR: &str = "/usr/lib/sysimage/ostatus";
 
-static CONFIG_DIR_SYS: &str = "/usr/etc";
-static CONFIG_DIR: &str = "/etc";
+static CONFIG_DIR_SYS: &str = "/usr/etc/ostatus";
+static CONFIG_DIR: &str = "/etc/ostatus";
 static CONFIG: &str = "ostatus.cfg";
 
 pub type GenericError = Box<dyn std::error::Error + Send + Sync + 'static>;
