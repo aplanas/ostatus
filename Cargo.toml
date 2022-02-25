@@ -10,7 +10,7 @@ chrono = "0.4.19"
 clap = { version = "3.1.1", features = ["derive"] }
 configparser = "3.0.0"
 flate2 = "1.0.22"
-git2 = "0.13.25"
+git2 = "0.14.0"
 librpm = { git = "https://github.com/rpm-software-management/librpm.rs" }
 libsolv-rs = { path = "libsolv-rs" }
 regex = "1.5.4"
