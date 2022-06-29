@@ -111,7 +111,7 @@ impl Repo {
             let solv_file = libc::fopen(solv_filename_c.as_ptr(), mode.as_ptr());
             let repo =
                 libsolv_sys::repo_add_solv(self.repo, mem::transmute(solv_file), flags.bits as i32);
-            libc::fclose(mem::transmute(solv_file));
+            libc::fclose(solv_file);
             repo
         }
     }

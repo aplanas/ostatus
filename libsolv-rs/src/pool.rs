@@ -302,7 +302,7 @@ impl Pool {
                 return packages;
             }
             solver = Solver { solver: solv };
-            libc::fclose(mem::transmute(testcase_file));
+            libc::fclose(testcase_file);
         }
 
         let problem_cnt = solver.solve(job);

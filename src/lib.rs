@@ -1,5 +1,6 @@
 use std::cmp::Eq;
 use std::collections::{HashMap, HashSet};
+use std::fmt::Write as _;
 use std::fs;
 use std::hash::Hash;
 use std::io::{self, BufRead, Write};
@@ -462,11 +463,12 @@ fn testcase(
 ) -> GenericResult<String> {
     let mut repos = "".to_string();
     for repo in repo_alias {
-        repos.push_str(&format!(
-            "repo {alias} {prio} solv /var/cache/zypp/solv/{alias}/solv\n",
+        writeln!(
+            repos,
+            "repo {alias} {prio} solv /var/cache/zypp/solv/{alias}/solv",
             alias = repo.alias,
             prio = repo.priority
-        ));
+        )?;
     }
 
     let mut flags = Vec::new();
