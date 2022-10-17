@@ -77,15 +77,13 @@ dependencies = [
 
 [[package]]
 name = "bindgen"
-version = "0.60.1"
+version = "0.61.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "062dddbc1ba4aca46de6338e2bf87771414c335f7b2f2036e8f3e9befebf88e6"
+checksum = "8a022e58a142a46fea340d68012b9201c094e93ec3d033a944a24f8fd4a4f09a"
 dependencies = [
  "bitflags",
  "cexpr",
  "clang-sys",
- "clap 3.2.22",
- "env_logger",
  "lazy_static",
  "lazycell",
  "log",
@@ -95,6 +93,7 @@ dependencies = [
  "regex",
  "rustc-hash",
  "shlex",
+ "syn",
  "which",
 ]
 
@@ -179,24 +178,9 @@ dependencies = [
  "atty",
  "bitflags",
  "strsim 0.8.0",
- "textwrap 0.11.0",
+ "textwrap",
  "unicode-width",
  "vec_map",
-]
-
-[[package]]
-name = "clap"
-version = "3.2.22"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "86447ad904c7fb335a790c9d7fe3d0d971dc523b8ccd1561a520de9a85302750"
-dependencies = [
- "atty",
- "bitflags",
- "clap_lex 0.2.4",
- "indexmap",
- "strsim 0.10.0",
- "termcolor",
- "textwrap 0.15.1",
 ]
 
 [[package]]
@@ -208,7 +192,7 @@ dependencies = [
  "atty",
  "bitflags",
  "clap_derive",
- "clap_lex 0.3.0",
+ "clap_lex",
  "once_cell",
  "strsim 0.10.0",
  "termcolor",
@@ -225,15 +209,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
-]
-
-[[package]]
-name = "clap_lex"
-version = "0.2.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2850f2f5a82cbf437dd5af4d49848fbdfc27c157c3d010345776f952765261c5"
-dependencies = [
- "os_str_bytes",
 ]
 
 [[package]]
@@ -375,12 +350,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9b919933a397b79c37e33b77bb2aa3dc8eb6e165ad809e58ff75bc7db2e34574"
 
 [[package]]
-name = "hashbrown"
-version = "0.12.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8a9ee70c43aaf417c914396645a0fa852624801b24ebb7ae78fe8272889ac888"
-
-[[package]]
 name = "heck"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -423,16 +392,6 @@ dependencies = [
  "matches",
  "unicode-bidi",
  "unicode-normalization",
-]
-
-[[package]]
-name = "indexmap"
-version = "1.9.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "10a35a97730320ffe8e2d410b5d3b69279b98d2c14bdb8b70ea89ecf7888d41e"
-dependencies = [
- "autocfg",
- "hashbrown",
 ]
 
 [[package]]
@@ -535,7 +494,7 @@ dependencies = [
 name = "libsolv-sys"
 version = "0.1.0"
 dependencies = [
- "bindgen 0.60.1",
+ "bindgen 0.61.0",
 ]
 
 [[package]]
@@ -855,12 +814,6 @@ checksum = "d326610f408c7a4eb6f51c37c330e496b08506c9457c9d34287ecc38809fb060"
 dependencies = [
  "unicode-width",
 ]
-
-[[package]]
-name = "textwrap"
-version = "0.15.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "949517c0cf1bf4ee812e2e07e08ab448e3ae0d23472aee8a06c985f0c8815b16"
 
 [[package]]
 name = "time"
