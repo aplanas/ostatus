@@ -646,7 +646,7 @@ dependencies = [
 [[package]]
 name = "librpm"
 version = "0.1.1"
-source = "git+https://github.com/rpm-software-management/librpm.rs#8bd8c9f1e3c745b3e27e0e591a384dea89dfadee"
+source = "git+https://github.com/rpm-software-management/librpm.rs#dbd7013b422bd9903ec3c63c41e8e7f407639ed1"
 dependencies = [
  "librpm-sys",
  "once_cell",
@@ -656,7 +656,7 @@ dependencies = [
 [[package]]
 name = "librpm-sys"
 version = "0.1.1"
-source = "git+https://github.com/rpm-software-management/librpm.rs#8bd8c9f1e3c745b3e27e0e591a384dea89dfadee"
+source = "git+https://github.com/rpm-software-management/librpm.rs#dbd7013b422bd9903ec3c63c41e8e7f407639ed1"
 dependencies = [
  "bindgen 0.59.2",
 ]
