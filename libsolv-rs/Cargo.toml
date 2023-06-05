@@ -7,5 +7,5 @@ edition = "2021"
 
 [dependencies]
 bitflags = "2.3.1"
-libc = "0.2.144"
+libc = "0.2.145"
 libsolv-sys = { path = "../libsolv-sys" }
