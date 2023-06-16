@@ -14,7 +14,7 @@ git2 = "0.17.2"
 librpm = { git = "https://github.com/rpm-software-management/librpm.rs" }
 libsolv-rs = { path = "libsolv-rs" }
 regex = "1.8.4"
-sha2 = "0.10.6"
+sha2 = "0.10.7"
 tempfile = "3.6.0"
 xmltree = "0.10.3"
 
