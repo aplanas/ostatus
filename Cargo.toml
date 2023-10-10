@@ -13,7 +13,7 @@ flate2 = "1.0.27"
 git2 = "0.18.1"
 librpm = { git = "https://github.com/rpm-software-management/librpm.rs" }
 libsolv-rs = { path = "libsolv-rs" }
-regex = "1.9.6"
+regex = "1.10.0"
 sha2 = "0.10.8"
 tempfile = "3.8.0"
 xmltree = "0.10.3"
