@@ -9,7 +9,7 @@ edition = "2021"
 chrono = "0.4.31"
 clap = { version = "4.4.6", features = ["derive"] }
 configparser = "3.0.2"
-flate2 = "1.0.27"
+flate2 = "1.0.28"
 git2 = "0.18.1"
 librpm = { git = "https://github.com/rpm-software-management/librpm.rs" }
 libsolv-rs = { path = "libsolv-rs" }
