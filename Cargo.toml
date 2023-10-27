@@ -15,7 +15,7 @@ librpm = { git = "https://github.com/rpm-software-management/librpm.rs" }
 libsolv-rs = { path = "libsolv-rs" }
 regex = "1.10.2"
 sha2 = "0.10.8"
-tempfile = "3.8.0"
+tempfile = "3.8.1"
 xmltree = "0.10.3"
 
 [workspace]
